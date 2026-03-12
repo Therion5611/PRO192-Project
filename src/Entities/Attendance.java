@@ -17,11 +17,8 @@ public class Attendance {
         this.employeeID = employeeID.toUpperCase();
         this.date = date;
         this.status = status;
-       if (status != null) {
-            throw new IllegalArgumentException("Status cannot be null");
-        }
-        this.status = status;
-        this.overtimeHours = overtimeHours;
+        setStatus(status);
+        setOvertimeHours(overtimeHours);
     }
 
     public String getEmployeeID() {
@@ -35,15 +32,28 @@ public class Attendance {
     public String getStatus() {
         return status;
     }
+    public void setStatus(String status){
+        if (!DataValidation.isValidAttendanceStatus(status)) {
+            throw new IllegalArgumentException("Invalid attendance status");
+        }
+        this.status = status;
+    }
 
     public int getOvertimeHours() {
         return overtimeHours;
     }
+    public void setOvertimeHours(int overtimeHours){
+        if (!DataValidation.isValidOvertimeHours(overtimeHours)) {
+            throw new IllegalArgumentException("Overtime hours cannot be negative or invalid");
+        }
+        this.overtimeHours = overtimeHours;
+    }
 
     @Override
     public String toString() {
-        return "Attendence{" + "employeeID=" + employeeID + ", date=" + date + ", status=" + status + ", overtimeHours=" + overtimeHours + '}';
+        return String.format("Attendance [ID: %s | Date: %s | Status: %s | OvertimeHours: %dh]", employeeID, date, status, overtimeHours);
     }
    
     
 }
+
