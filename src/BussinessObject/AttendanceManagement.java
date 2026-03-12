@@ -11,12 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import Entities.Attendance;
-import Entities.AttendanceStatus;
 
 public class AttendanceManagement {
 
-    private final Map<String, List<Attendance>> attendanceRecords;
+    private Map<String, List<Attendance>> attendanceRecords;
 
     public AttendanceManagement() {
         this.attendanceRecords = new HashMap<>();
@@ -24,7 +22,6 @@ public class AttendanceManagement {
 
     public boolean recordAttendance(String employeeID, LocalDate date, String status, int overtimeHours) {
         attendanceRecords.putIfAbsent(employeeID, new ArrayList<>());
-        
         List<Attendance> records = attendanceRecords.get(employeeID);
         
         for (Attendance record : records) {
@@ -43,13 +40,13 @@ public class AttendanceManagement {
         }
         
         List<Attendance> records = attendanceRecords.get(employeeID);
-        for (int i = 0; i < records.size(); i++) {
-            if (records.get(i).getDate().equals(date)) {
-                records.set(i, new Attendance(employeeID, date, newStatus, newOvertime));
+        for (Attendance record : records) {
+            if (record.getDate().equals(date)) {
+                record.setStatus(newStatus);
+                record.setOvertimeHours(newOvertime);
                 return true;
             }
         }
-        
         return false; 
     }
 
@@ -59,9 +56,7 @@ public class AttendanceManagement {
 
     public int getTotalWorkingDays(String employeeID, int month, int year) {
         int totalDays = 0;
-        List<Attendance> records = getAttendanceHistory(employeeID);
-        
-        for (Attendance record : records) {
+        for (Attendance record : getAttendanceHistory(employeeID)) {
             LocalDate d = record.getDate();
             if (d.getMonthValue() == month && d.getYear() == year && "Present".equalsIgnoreCase(record.getStatus())) {
                 totalDays++;
@@ -72,9 +67,7 @@ public class AttendanceManagement {
 
     public int getTotalAbsenceDays(String employeeID, int month, int year) {
         int totalAbsence = 0;
-        List<Attendance> records = getAttendanceHistory(employeeID);
-        
-        for (Attendance record : records) {
+        for (Attendance record : getAttendanceHistory(employeeID)) {
             LocalDate d = record.getDate();
             if (d.getMonthValue() == month && d.getYear() == year && "Absent".equalsIgnoreCase(record.getStatus())) {
                 totalAbsence++;
@@ -85,9 +78,7 @@ public class AttendanceManagement {
 
     public int getTotalOvertimeHours(String employeeID, int month, int year) {
         int totalOvertime = 0;
-        List<Attendance> records = getAttendanceHistory(employeeID);
-        
-        for (Attendance record : records) {
+        for (Attendance record : getAttendanceHistory(employeeID)) {
             LocalDate d = record.getDate();
             if (d.getMonthValue() == month && d.getYear() == year) {
                 totalOvertime += record.getOvertimeHours();
