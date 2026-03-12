@@ -20,11 +20,18 @@ public abstract class Employee {
    
     //Constructor
     public Employee(String id, String name, String department, String jobTitle, LocalDate dateOfBirth, LocalDate joinDate, double basicSalary, String email, String type) throws Exception {
-        if (id == null || !DataValidation.checkStringWithFormat(id.toUpperCase(), "E\\d{3}")) {
+        if (id == null || !DataValidation.matchesPattern(id.toUpperCase(), "E\\d{3}")) {
             throw new Exception("Invalid Employee ID format! Must be E followed by 3 digits");
         }
         this.id = id.toUpperCase();
-        
+        setName(name);
+        setDepartment(department);
+        setJobTitle(jobTitle);
+        setDateOfBirth(dateOfBirth);
+        setJoinDate(joinDate);
+        setBasicSalary(basicSalary);
+        setEmail(email);
+        setType(type);
         
     }
 
@@ -43,7 +50,7 @@ public abstract class Employee {
     }
 
     public void setName(String name) throws Exception {
-        if (name == null || !DataValidation.checkStringWithFormat(name.trim(), "[A-Za-z\\s]{3,60}")){
+        if (name == null || !DataValidation.matchesPattern(name.trim(), "[A-Za-z\\s]{3,60}")){
             throw new Exception("Name must be 3-60 alphabetic character (BR2)");
         }
         this.name = name.trim();
@@ -109,7 +116,7 @@ public abstract class Employee {
     }
 
     public void setEmail(String email) throws Exception {
-        if (email == null || !DataValidation.checkStringWithFormat(email,EMAIL_PATTERN)) {
+        if (email == null || !DataValidation.matchesPattern(email,EMAIL_PATTERN)) {
             throw new Exception("Invalid email!");
         }
         this.email = email.trim().toLowerCase();
@@ -123,7 +130,7 @@ public abstract class Employee {
         if (type == null || (!type.equalsIgnoreCase("Full-time") && !type.equalsIgnoreCase("Part-time"))) {
             throw new Exception("Employee type must be 'Full-time' or 'Part-time'.");
         }
-        this.type = type.substring(0).toUpperCase() + type.substring(0,1).toLowerCase();
+        this.type = type.substring(0,1).toUpperCase() + type.substring(1).toLowerCase();
     }
 
     public boolean isActive() {

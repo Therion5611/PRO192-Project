@@ -6,7 +6,7 @@ package Entities;
 
 /**
  *
- * @author ADMIN
+ * @author Hao
  */
 public enum AttendanceStatus {
     PRESENT,

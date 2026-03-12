@@ -1,14 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Entities;
 
 import java.time.LocalDate;
 
 /**
  *
- * @author ADMIN
+ * @author Hao
  */
 public class Attendance {
     private final String employeeID;
@@ -17,7 +14,7 @@ public class Attendance {
     private int overtimeHours;
 
     public Attendance(String employeeID, LocalDate date, String status, int overtimeHours) {
-        this.employeeID = employeeID;
+        this.employeeID = employeeID.toUpperCase();
         this.date = date;
         this.status = status;
        if (status != null) {

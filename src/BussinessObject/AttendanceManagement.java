@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package BussinessObject;
         
 
 /**
  *
- * @author ADMIN
+ * @author Hao
  */
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,11 +14,11 @@ import java.util.Map;
 import Entities.Attendance;
 import Entities.AttendanceStatus;
 
-public class AttendanceManegement {
+public class AttendanceManagement {
 
     private final Map<String, List<Attendance>> attendanceRecords;
 
-    public AttendanceManegement() {
+    public AttendanceManagement() {
         this.attendanceRecords = new HashMap<>();
     }
 
