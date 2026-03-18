@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class ParttimeEmployee extends Employee {
     public ParttimeEmployee(String id, String name, String department, String jobTitle, LocalDate dateOfBirth, LocalDate joinDate, double basicSalary, String email) throws Exception{
-        super(id, name, department, jobTitle, dateOfBirth, joinDate, basicSalary, email, "Part-time");
+        super(id, name, department, jobTitle, dateOfBirth, joinDate, basicSalary, email, EmployeeType.PARTTIME);
     }
     @Override
     public double calculateSalary(int workingDays, int overtimeHours, int absentDays){

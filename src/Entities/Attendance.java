@@ -1,6 +1,6 @@
-
 package Entities;
 
+import Utilities.DataValidation;
 import java.time.LocalDate;
 
 /**
@@ -8,15 +8,15 @@ import java.time.LocalDate;
  * @author Hao
  */
 public class Attendance {
+
     private final String employeeID;
     private final LocalDate date;
-    private String status;
+    private AttendanceStatus status;
     private int overtimeHours;
 
-    public Attendance(String employeeID, LocalDate date, String status, int overtimeHours) {
+    public Attendance(String employeeID, LocalDate date, AttendanceStatus status, int overtimeHours) {
         this.employeeID = employeeID.toUpperCase();
         this.date = date;
-        this.status = status;
         setStatus(status);
         setOvertimeHours(overtimeHours);
     }
@@ -29,12 +29,13 @@ public class Attendance {
         return date;
     }
 
-    public String getStatus() {
+    public AttendanceStatus getStatus() {
         return status;
     }
-    public void setStatus(String status){
-        if (!DataValidation.isValidAttendanceStatus(status)) {
-            throw new IllegalArgumentException("Invalid attendance status");
+
+    public void setStatus(AttendanceStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Attendance status cannot be null");
         }
         this.status = status;
     }
@@ -42,7 +43,8 @@ public class Attendance {
     public int getOvertimeHours() {
         return overtimeHours;
     }
-    public void setOvertimeHours(int overtimeHours){
+
+    public void setOvertimeHours(int overtimeHours) {
         if (!DataValidation.isValidOvertimeHours(overtimeHours)) {
             throw new IllegalArgumentException("Overtime hours cannot be negative or invalid");
         }
@@ -53,7 +55,5 @@ public class Attendance {
     public String toString() {
         return String.format("Attendance [ID: %s | Date: %s | Status: %s | OvertimeHours: %dh]", employeeID, date, status, overtimeHours);
     }
-   
-    
-}
 
+}

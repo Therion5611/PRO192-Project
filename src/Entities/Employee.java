@@ -1,4 +1,3 @@
-
 package Entities;
 
 import Utilities.DataValidation;
@@ -6,20 +5,20 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class Employee {
-    private final String id;                
+
+    private final String id;
     private String name;
-    private String department;            
+    private String department;
     private String jobTitle;
     private LocalDate dateOfBirth;
-    private LocalDate joinDate;             
+    private LocalDate joinDate;
     private double basicSalary;
     private String email;
-    private String type;                    // "Full-time" hoặc "Part-time"
+    private EmployeeType type;                    // "Full-time" hoặc "Part-time"
     private boolean active = true;
 
-   
     //Constructor
-    public Employee(String id, String name, String department, String jobTitle, LocalDate dateOfBirth, LocalDate joinDate, double basicSalary, String email, String type) throws Exception {
+    public Employee(String id, String name, String department, String jobTitle, LocalDate dateOfBirth, LocalDate joinDate, double basicSalary, String email, EmployeeType type) throws Exception {
         if (id == null || !DataValidation.matchesPattern(id.toUpperCase(), "E\\d{3}")) {
             throw new Exception("Invalid Employee ID format! Must be E followed by 3 digits");
         }
@@ -31,26 +30,32 @@ public abstract class Employee {
         setJoinDate(joinDate);
         setBasicSalary(basicSalary);
         setEmail(email);
-        setType(type);
-        
+        this.type = type;
+
     }
 
     //Validate email
-    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
-    
-    
-    
+    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9-.]+$";;
+
     //Getter setter
-    public String getId(){
+    public String getId() {
         return id;
     }
-    
+
+    public EmployeeType getType() {
+        return type;
+    }
+
+    public void setType(EmployeeType type) {
+        this.type = type;
+    }
+
     public String getName() {
         return toTitleCase(name);
     }
 
     public void setName(String name) throws Exception {
-        if (name == null || !DataValidation.matchesPattern(name.trim(), "[A-Za-z\\s]{3,60}")){
+        if (name == null || !DataValidation.matchesPattern(name.trim(), "[A-Za-z\\s]{3,60}")) {
             throw new Exception("Name must be 3-60 alphabetic character (BR2)");
         }
         this.name = name.trim();
@@ -60,9 +65,9 @@ public abstract class Employee {
         return department;
     }
 
-    public void setDepartment(String department) throws Exception{
+    public void setDepartment(String department) throws Exception {
         if (department == null || department.trim().isEmpty()) {
-            throw new Exception ("Department cannot be empty!");
+            throw new Exception("Department cannot be empty!");
         }
         this.department = department.trim();
     }
@@ -116,21 +121,10 @@ public abstract class Employee {
     }
 
     public void setEmail(String email) throws Exception {
-        if (email == null || !DataValidation.matchesPattern(email,EMAIL_PATTERN)) {
+        if (email == null || !DataValidation.matchesPattern(email, EMAIL_PATTERN)) {
             throw new Exception("Invalid email!");
         }
         this.email = email.trim().toLowerCase();
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) throws Exception {
-        if (type == null || (!type.equalsIgnoreCase("Full-time") && !type.equalsIgnoreCase("Part-time"))) {
-            throw new Exception("Employee type must be 'Full-time' or 'Part-time'.");
-        }
-        this.type = type.substring(0,1).toUpperCase() + type.substring(1).toLowerCase();
     }
 
     public boolean isActive() {
@@ -140,38 +134,39 @@ public abstract class Employee {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
+
     //Abstract class
     public abstract double calculateSalary(int workingDays, int overtimeHours, int absentDays);
-    
-    
+
     //Phuong Thuc Ho Tro getName()
     private String toTitleCase(String str) {
-        if (str == null || str.trim().isEmpty()) return "";
+        if (str == null || str.trim().isEmpty()) {
+            return "";
+        }
         String trimmed = str.trim().replaceAll("\\s+", " ").toLowerCase();
         String[] words = trimmed.split(" ");
         StringBuilder sb = new StringBuilder();
         for (String word : words) {
             if (word.length() > 0) {
                 sb.append(Character.toUpperCase(word.charAt(0)))
-                  .append(word.substring(1)).append(" ");
+                .append(word.substring(1)).append(" ");
             }
         }
         return sb.toString().trim();
     }
-    
+
     //ToString();
     public String toDetailString() {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return "ID          : " + id + "\n" +
-               "Name        : " + toTitleCase(name) + "\n" +
-               "Department  : " + department + "\n" +
-               "Job Title   : " + jobTitle + "\n" +
-               "Type        : " + type + "\n" +
-               "DOB         : " + dateOfBirth.format(fmt) + "\n" +
-               "Join Date   : " + joinDate.format(fmt) + "\n" +
-               "Basic Salary: " + String.format("%,.0f VND", basicSalary) + "\n" +
-               "Email       : " + email + "\n" +
-               "Status      : " + (active ? "Active" : "Inactive");
+        return "ID          : " + id + "\n"
+        + "Name        : " + toTitleCase(name) + "\n"
+        + "Department  : " + department + "\n"
+        + "Job Title   : " + jobTitle + "\n"
+        + "Type        : " + type + "\n"
+        + "DOB         : " + dateOfBirth.format(fmt) + "\n"
+        + "Join Date   : " + joinDate.format(fmt) + "\n"
+        + "Basic Salary: " + String.format("%,.0f VND", basicSalary) + "\n"
+        + "Email       : " + email + "\n"
+        + "Status      : " + (active ? "Active" : "Inactive");
     }
 }

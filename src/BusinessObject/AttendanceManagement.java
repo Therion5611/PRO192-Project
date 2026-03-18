@@ -1,11 +1,14 @@
 
-package BussinessObject;
+package BusinessObject;
         
 
 /**
  *
  * @author Hao
  */
+import DataObject.AttendanceDAO;
+import Entities.Attendance;
+import Entities.AttendanceStatus;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,12 +18,14 @@ import java.util.Map;
 public class AttendanceManagement {
 
     private Map<String, List<Attendance>> attendanceRecords;
+    private AttendanceDAO attendanceDAO;
 
     public AttendanceManagement() {
-        this.attendanceRecords = new HashMap<>();
+        attendanceDAO = new AttendanceDAO();
+        this.attendanceRecords = new HashMap<>(attendanceDAO.loadAttendance());
     }
 
-    public boolean recordAttendance(String employeeID, LocalDate date, String status, int overtimeHours) {
+    public boolean recordAttendance(String employeeID, LocalDate date, AttendanceStatus status, int overtimeHours) {
         attendanceRecords.putIfAbsent(employeeID, new ArrayList<>());
         List<Attendance> records = attendanceRecords.get(employeeID);
         
@@ -31,10 +36,11 @@ public class AttendanceManagement {
         }
         
         records.add(new Attendance(employeeID, date, status, overtimeHours));
+        attendanceDAO.saveAttendance(attendanceRecords);
         return true;
     }
 
-    public boolean updateAttendance(String employeeID, LocalDate date, String newStatus, int newOvertime) {
+    public boolean updateAttendance(String employeeID, LocalDate date, AttendanceStatus newStatus, int newOvertime) {
         if (!attendanceRecords.containsKey(employeeID)) {
             return false; 
         }
@@ -44,6 +50,7 @@ public class AttendanceManagement {
             if (record.getDate().equals(date)) {
                 record.setStatus(newStatus);
                 record.setOvertimeHours(newOvertime);
+                attendanceDAO.saveAttendance(attendanceRecords);
                 return true;
             }
         }
@@ -58,7 +65,7 @@ public class AttendanceManagement {
         int totalDays = 0;
         for (Attendance record : getAttendanceHistory(employeeID)) {
             LocalDate d = record.getDate();
-            if (d.getMonthValue() == month && d.getYear() == year && "Present".equalsIgnoreCase(record.getStatus())) {
+            if (d.getMonthValue() == month && d.getYear() == year && record.getStatus() == AttendanceStatus.PRESENT) {
                 totalDays++;
             }
         }
@@ -69,7 +76,7 @@ public class AttendanceManagement {
         int totalAbsence = 0;
         for (Attendance record : getAttendanceHistory(employeeID)) {
             LocalDate d = record.getDate();
-            if (d.getMonthValue() == month && d.getYear() == year && "Absent".equalsIgnoreCase(record.getStatus())) {
+            if (d.getMonthValue() == month && d.getYear() == year && record.getStatus() == AttendanceStatus.ABSENT) {
                 totalAbsence++;
             }
         }

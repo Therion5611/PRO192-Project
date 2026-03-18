@@ -1,3 +1,4 @@
+
 package Utilities;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 public class DataInput {
 
     private static Scanner sc = new Scanner(System.in);
-    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd//MM/YY");
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static String inputString(String s) {
         while (true) {
@@ -59,7 +60,7 @@ public class DataInput {
                 if (DataValidation.isDoubleInRange(value, min, max)) {
                     return value;
                 }
-                System.err.println("Value must be < " + min +  " and > " + max + "!!!");
+                System.err.println("Value must be >= " + min +  " and <= " + max + "!!!");
                 
             } catch (NumberFormatException e) {
                 System.err.println("Invalid number!!!");

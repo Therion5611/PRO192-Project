@@ -1,10 +1,21 @@
 
 package Utilities;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author nguye
+ */
 public class FileManager {
     public static List<String> readFile(String fileName) {
         List<String> lines = new ArrayList<>();

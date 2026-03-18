@@ -1,0 +1,1 @@
+FULLTIME,E001,Nguyen Trung Tinh,fpt,SinhVien,2006-03-17,2022-02-12,5000000.0,kimthu0120@gmail.com,true
